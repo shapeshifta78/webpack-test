@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ENV = process.env.NODE_ENV;
-const debug = ENV !== "production";
 
 module.exports = {
     context: path.resolve(__dirname, './src'),
@@ -21,7 +21,7 @@ module.exports = {
 
     },
 
-    devtool: debug ? 'source-map' : false,
+    devtool: (ENV !== 'production') ? 'source-map' : false,
 
     module: {
         rules: [
@@ -64,6 +64,7 @@ module.exports = {
     },
 
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new webpack.DefinePlugin({
             PRODUCTION: JSON.stringify(ENV === 'production'),
             DEVELOPMENT: JSON.stringify(ENV === 'development')
